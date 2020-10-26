@@ -19,8 +19,25 @@ tmtfilessum <- tmtFiles %>%
   rename(image_files = "image files", tomato_pericarp_area = "Tomato Pericarp Area", R = "Average Red", G = "Average Green", B = "Average Blue" )
 ```
 
-
 ```{r, fig.height= 10, fig.width= 15}
 ggplot(data = tmtfilessum, mapping = aes(x = tomato_pericarp_area, y = image_files)) +
-  geom_point(size = 6, colour = rgb(tmtfilessum$R, tmtfilessum$G, tmtfilessum$B, maxColorValue = 255))
+  geom_point(size = 3, colour = rgb(tmtfilessum$R, tmtfilessum$G, tmtfilessum$B, maxColorValue = 255)) +  #rgb command converts rgb values to hex code
+  theme_bw()
 ```
+
+```{r, message = FALSE, error= FALSE}
+tmtFiles <- tmtFiles %>%
+  rename(image_files = "image files", tomato_pericarp_area = "Tomato Pericarp Area", R = "Average Red", G = "Average Green", B = "Average Blue", tomato_pericarp_area_ratio = "Tomato Pericarp Area Ratio", tomato_pericarp_thickness = "Tomato Pericarp Thickness", tomato_pericarp_thickness_ratio = "Tomato Pericarp Thickness Ratio", avg_luminosity = "Average Luminosity", L = "Average L Value", a = "Average a Value", b = "Average b Value", avg_hue = "Average Hue", avg_chroma = "Average Chroma")
+```
+
+```{r, message= FALSE, error= FALSE}
+tmtfilesthickness <- tmtFiles %>% 
+  select(`image_files`, `R`, `G`, `B`, `tomato_pericarp_thickness`)
+```
+
+```{r, fig.height= 10, fig.width= 15}
+ggplot(data = tmtfilesthickness, aes(x = tomato_pericarp_thickness, y = image_files)) +
+  geom_boxplot()
+```
+
+  
