@@ -1,0 +1,26 @@
+---
+title: "Tomato Color Tester"
+author: "Rovin Sharma"
+date: "10/26/2020"
+output: html_document
+---
+
+```{r, include = FALSE, message = FALSE, error = FALSE}
+library(tidyverse)
+```
+
+```{r, message = FALSE, error = FALSE}
+tmtFiles <- read_csv("D:/School/Caicedo Lab/Test.csv")
+```
+
+```{r, message = FALSE, error = FALSE}
+tmtfilessum <- tmtFiles %>% 
+  select(`image files`, `Tomato Pericarp Area`, `Average Red`, `Average Green`, `Average Blue`) %>% 
+  rename(image_files = "image files", tomato_pericarp_area = "Tomato Pericarp Area", R = "Average Red", G = "Average Green", B = "Average Blue" )
+```
+
+
+```{r, fig.height= 10, fig.width= 15}
+ggplot(data = tmtfilessum, mapping = aes(x = tomato_pericarp_area, y = image_files)) +
+  geom_point(size = 6, colour = rgb(tmtfilessum$R, tmtfilessum$G, tmtfilessum$B, maxColorValue = 255))
+```
