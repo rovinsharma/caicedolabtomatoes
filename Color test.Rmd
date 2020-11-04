@@ -4,10 +4,10 @@ author: "Rovin Sharma"
 date: "10/26/2020"
 output:
   prettydoc::html_pretty:
-    theme: architect
+    theme: cayman
     highlight: github
 ---
-**This is a ggplot test to use RGB values from the analyzer images to color the points of each species with its corresponding color**
+**This is my workflow of trying to figure out how to implement the color values acquired from Tomato Analyzer onto plots.**
 ```{r, include = FALSE, message = FALSE, error = FALSE}
 library(tidyverse)
 ```
@@ -15,21 +15,24 @@ library(tidyverse)
 ```{r, include = FALSE, message = FALSE, error = FALSE}
 tmtFiles <- read_csv("D:/School/Caicedo Lab/Test.csv")
 ```
-First the columns needed to be renamed since they've got spaces. 
+Renaming columns; it's pretty tedious, might be easier to do this in excel.
+
 ```{r, message = FALSE, error= FALSE}
 tmtFiles <- tmtFiles %>%
   rename(image_files = "image files", tomato_pericarp_area = "Tomato Pericarp Area", R = "Average Red", G = "Average Green", B = "Average Blue", tomato_pericarp_area_ratio = "Tomato Pericarp Area Ratio", tomato_pericarp_thickness = "Tomato Pericarp Thickness", tomato_pericarp_thickness_ratio = "Tomato Pericarp Thickness Ratio", avg_luminosity = "Average Luminosity", L = "Average L Value", a = "Average a Value", b = "Average b Value", avg_hue = "Average Hue", avg_chroma = "Average Chroma")
 ```
 
 Selecting for specific columns. It is not necessary to select R, G, B since the values are pulled from the original files.
+
 ```{r, message= FALSE, error= FALSE}
 tmtfilesthickness <- tmtFiles %>% 
   select(`image_files`, `tomato_pericarp_thickness`)
 ```
 
-The ggplot initial aes can not contain the colors from the RGB, for some reason it ends up picking a spectrum rather than the RGB values of specific image files. The best way to go about coloring the points is to actually color in the geom_point arguments, as I've done below.
+The ggplot initial aes can not contain the colors from the RGB, for some reason it ends up picking a spectrum rather than the RGB values of specific image files. The best way to go about coloring the points is to actually color in the geom_point arguments, as I've done below. The problem with this is that the colors are not quantified, so there is no metric to compare, simply just colors to look at (Which could be useless for people with color blindness).
 
 I've made the points quite large to see the colors, the average values aren't too far apart, I only used a fraction of the images data.
+
 ```{r, fig.height= 10, fig.width= 15}
 ggplot(data = tmtfilesthickness, aes(x = tomato_pericarp_thickness, y = image_files)) +
   geom_point(size = 6, color = rgb(tmtFiles$R, tmtFiles$G, tmtFiles$B, maxColorValue = 255)) +
